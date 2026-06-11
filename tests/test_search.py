@@ -61,17 +61,22 @@ def test_search_book_by_name(page, test_config):
     enable_flutter_semantics(page)
     page.screenshot(path=os.path.join(SCREENSHOT_DIR, "tc04_search_by_name.png"))
 
-    # Assert (B3: specific — count cards and check aria-label content)
-    matching_cards = page.locator('flt-semantics[aria-label*="Flutter"]')
+    # Assert (B3: specific — count book group cards with Flutter in aria-label)
+    # Note: Flutter CanvasKit stores book titles in aria-label, not text nodes.
+    # Use role="group" to match book cards only (not the search input field itself).
+    matching_cards = page.locator('flt-semantics[role="group"][aria-label*="Flutter"]')
     assert matching_cards.count() > 0, (
-        "TC-04 FAILED: Expected at least one result with 'Flutter' in aria-label. "
+        "TC-04 FAILED: Expected at least one book card with 'Flutter' in aria-label. "
         "Seed book BOOK001 'Lập trình Flutter cơ bản' should match."
     )
 
-    # B3: Also verify via full semantics text
-    sem_text = " ".join(page.locator("flt-semantics").all_text_contents())
-    assert "Flutter" in sem_text, (
-        f"TC-04 FAILED: 'Flutter' not found in semantics text. Got: {sem_text[:300]}"
+    # B3: Also verify via all aria-labels (Flutter CanvasKit renders titles in aria-label)
+    all_labels = " ".join(
+        el.get_attribute("aria-label") or ""
+        for el in page.locator("flt-semantics").all()
+    )
+    assert "Flutter" in all_labels, (
+        f"TC-04 FAILED: 'Flutter' not found in any aria-label. Got labels: {all_labels[:300]}"
     )
 
 
@@ -187,15 +192,20 @@ def test_search_by_author(page, test_config):
     enable_flutter_semantics(page)
     page.screenshot(path=os.path.join(SCREENSHOT_DIR, "tc07_search_by_author.png"))
 
-    # Assert (B3: count AND content)
-    author_results = page.locator('flt-semantics[aria-label*="Nguyễn Minh Đức"]')
+    # Assert (B3: count AND content via aria-labels)
+    # Note: Flutter CanvasKit stores author names in aria-label, not text nodes.
+    author_results = page.locator('flt-semantics[role="group"][aria-label*="Nguyễn Minh Đức"]')
     assert author_results.count() > 0, (
         "TC-07 FAILED: Expected books by 'Nguyễn Minh Đức' (BOOK001, BOOK009). "
-        "No matching result found."
+        "No matching book card found."
     )
 
-    sem_text = " ".join(page.locator("flt-semantics").all_text_contents())
-    assert "Nguyễn Minh Đức" in sem_text, (
-        f"TC-07 FAILED: Author 'Nguyễn Minh Đức' not in semantics text. "
-        f"Got: {sem_text[:300]}"
+    # B3: Also verify via all aria-labels
+    all_labels = " ".join(
+        el.get_attribute("aria-label") or ""
+        for el in page.locator("flt-semantics").all()
+    )
+    assert "Nguyễn Minh Đức" in all_labels, (
+        f"TC-07 FAILED: Author 'Nguyễn Minh Đức' not found in any aria-label. "
+        f"Got labels: {all_labels[:300]}"
     )
