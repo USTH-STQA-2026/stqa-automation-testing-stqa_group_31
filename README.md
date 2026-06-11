@@ -18,7 +18,7 @@ Sử dụng Playwright + Python để kiểm thử hệ thống Mượn sách Th
 
 | # | MSSV | Họ và tên | Vai trò |
 |---|------|-----------|---------|
-| 1 | — | Nhóm trưởng | Nhóm trưởng |
+| 1 | 23BA14269|Đào Lê Xuân Thiên | Nhóm trưởng |
 | 2 | — | Thành viên | Thành viên |
 | 3 | — | Thành viên | Thành viên |
 | 4 | — | Thành viên | Thành viên |
