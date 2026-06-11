@@ -35,7 +35,7 @@ from conftest import (
 )
 
 # Selectors
-BORROW_RETURN_TAB = 'flt-semantics[role="tab"][aria-label="Μượn / Trả"]'
+BORROW_RETURN_TAB = 'flt-semantics[role="tab"][aria-label="Mượn / Trả"]'
 BOOK_CARD_AVAILABLE = 'flt-semantics[role="group"][aria-label*="Có sẵn"]'
 RETURN_BTN = 'flt-semantics[role="button"]:has-text("Trả sách")'
 BORROW_BTN = 'flt-semantics[role="button"]:has-text("Mượn sách này")'
